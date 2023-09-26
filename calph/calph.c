@@ -1,3 +1,7 @@
+#ifdef __unix
+#define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
+#endif
+
 #define CALPH_VERSION "0.0.1"
 
 #include <stdio.h>
@@ -138,7 +142,7 @@ int main(int argc, char** argv)
     }
 
     // Tests if given file exists
-    errno_t err = fopen_s(&file, argv[1], "r");
+    int err = fopen_s(&file, argv[1], "r");
     if (err == 0)
         ;
     else {
@@ -154,6 +158,8 @@ int main(int argc, char** argv)
     printf("a: %d\nb: %d\nc: %d\nd: %d\ne: %d\nf: %d\ng: %d\nh: %d\ni: %d\nj: %d\nk: %d\nl: %d\nm: %d\nn: %d\no: %d\np: %d\nq: %d\nr: %d\ns: %d\nt: %d\nu: %d\nv: %d\nw: %d\nx: %d\ny: %d\nz: %d\n", a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);
     // Show user how many of each special character are in the given file (additionally the sum of all symbols as calculated earlier)
     printf("' ': %d\nsum: %d\n", space, sum);
+    // Show user how many of each character are in the given file excluding spaces
+    printf("sum (without spaces): %d characters\n", sum-space);
 
     return ERR_NO;
 }
