@@ -12,22 +12,17 @@
 #define ERR_NOFILE 2            // Error: No File
 #define ERR_NOARG 3             // Error: No Arguments given
 
-
-unsigned int count[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
 char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
+
+unsigned int count[(sizeof(characters)/sizeof(*characters))] = {0};
               
 FILE* file;
 
-// Counts all symbols in the given file
 void counter() {  
-    int get;
-    for (int i = 0; i < (sizeof(count) / sizeof(count[0])); i++) {
-        for (get = getc(file); get != EOF; get = getc(file)) {
-            char character = characters[i];
-            if(get == character || get == toupper(character))
+    for (int i = 0; i < (sizeof(count) / sizeof(*count)); i++) {
+        for (int get = getc(file); get != EOF; get = getc(file)) {
+            if(get == characters[i] || get == toupper(characters[i]))
                 count[i]++;
         }
         fseek(file, 0, SEEK_SET);
@@ -37,37 +32,31 @@ void counter() {
 int main(int argc, char** argv)
 {
 
-    if (argc > 1)
-        ;
-    else {
+    if(!(argc > 1)) {
         printf("Not enough arguments given, use calph --help to see syntax\nExiting\n");
         return ERR_NOARG;
     }
 
-    // Tests if given file exists
     int err = fopen_s(&file, argv[1], "r");
-    if (err == 0)
-        ;
-    else {
+    if (!(err == 0)) {
         printf("File doesn't exist or is otherwise unavailable\nTry supplying a (valid) filename\n");
         return ERR_NOFILE;
     }
-    //
 
-    int sum;
-    int space;
+    int sum, space;
 
     counter();
-    size_t arraysize = sizeof(count) / sizeof(count[0]);
+    size_t arraysize = sizeof(count) / sizeof(*count);
     for(int i = 0; i < arraysize; i++)
         sum+=count[i];
     sum = sum + space;
-    // Show user how many of each alphabetical character are in the given file
+
     for(int i = 0; i < arraysize; i++)
         printf("%c: %d\n", characters[i], count[i]);
+
     printf("Sum: %d characters\n", sum);
-    // Show user how many of each character are in the given file excluding spaces
-    printf("Sum (without spaces): %d characters\n", sum-count[26]);
+
+    printf("Sum (without spaces): %d characters\n", sum-count[sizeof(count) / sizeof(*count) - 1]);
 
     return ERR_NO;
 }
