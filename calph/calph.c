@@ -2,7 +2,7 @@
 #define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
 #endif
 
-#define CALPH_VERSION "0.1.0"
+#define CALPH_VERSION "0.1.1"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -16,7 +16,6 @@
 char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ',
                 '+', '-', '*', '/', '!', '"', '$', '%', '&', '(', ')', '=', '?'};
-size_t charactersArraySize = sizeof(characters)/sizeof(*characters);
 unsigned int count[(sizeof(characters)/sizeof(*characters))] = {0};
 size_t countArraySize = sizeof(count) / sizeof(*count);
               
@@ -31,9 +30,7 @@ void counter() {
     }
 }
 
-int main(int argc, char** argv)
-{
-
+int main(int argc, char** argv) {
     if(!(argc > 1)) {
         printf("Not enough arguments given, use calph --help to see syntax\nExiting\n");
         return ERR_NOARG;
