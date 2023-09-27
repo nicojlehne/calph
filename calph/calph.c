@@ -2,7 +2,7 @@
 #define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
 #endif
 
-#define CALPH_VERSION "0.0.7"
+#define CALPH_VERSION "0.0.8"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -16,11 +16,12 @@ char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
 
 unsigned int count[(sizeof(characters)/sizeof(*characters))] = {0};
+size_t countArraySize = sizeof(count) / sizeof(*count);
               
 FILE* file;
 
 void counter() {  
-    for (int i = 0; i < (sizeof(count) / sizeof(*count)); i++) {
+    for (int i = 0; i < (countArraySize); i++) {
         for (int get = getc(file); get != EOF; get = getc(file)) {
             if(get == characters[i] || get == toupper(characters[i]))
                 count[i]++;
@@ -46,17 +47,13 @@ int main(int argc, char** argv)
     int sum, space;
 
     counter();
-    size_t arraysize = sizeof(count) / sizeof(*count);
-    for(int i = 0; i < arraysize; i++)
+    for(int i = 0; i < countArraySize; i++) {
         sum+=count[i];
-    sum = sum + space;
-
-    for(int i = 0; i < arraysize; i++)
         printf("%c: %d\n", characters[i], count[i]);
-
+    }
+    sum = sum + space;
     printf("Sum: %d characters\n", sum);
-
-    printf("Sum (without spaces): %d characters\n", sum-count[arraysize - 1]);
+    printf("Sum (without spaces): %d characters\n", sum-count[countArraySize - 1]);
 
     return ERR_NO;
 }
