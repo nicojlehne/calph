@@ -2,7 +2,7 @@
 #define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
 #endif
 
-#define CALPH_VERSION "0.0.8"
+#define CALPH_VERSION "0.0.9"
 
 #include <stdio.h>
 #include <ctype.h>
