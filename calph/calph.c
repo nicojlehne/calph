@@ -5,129 +5,32 @@
 #define CALPH_VERSION "0.0.1"
 
 #include <stdio.h>
+#include <ctype.h>
 
 #define ERR_NO 0                // Successful: No Error
 #define ERR_GENERIC 1
 #define ERR_NOFILE 2            // Error: No File
 #define ERR_NOARG 3             // Error: No Arguments given
 
-int a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z = 0;
-int space = 0;
-int get;
+
+unsigned int count[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
+              
 FILE* file;
 
 // Counts all symbols in the given file
-void count() {
-    for (get = getc(file); get != EOF; get = getc(file)) {
-        switch (get) {
-        case 'a':
-        case 'A':
-            a++;
-            break;
-        case 'b':
-        case 'B':
-            b++;
-            break;
-        case 'c':
-        case 'C':
-            c++;
-            break;
-        case 'd':
-        case 'D':
-            d++;
-            break;
-        case 'e':
-        case 'E':
-            e++;
-            break;
-        case 'f':
-        case 'F':
-            f++;
-            break;
-        case 'g':
-        case 'G':
-            g++;
-            break;
-        case 'h':
-        case 'H':
-            h++;
-            break;
-        case 'i':
-        case 'I':
-            i++;
-            break;
-        case 'j':
-        case 'J':
-            j++;
-            break;
-        case 'k':
-        case 'K':
-            k++;
-            break;
-        case 'l':
-        case 'L':
-            l++;
-            break;
-        case 'm':
-        case 'M':
-            m++;
-            break;
-        case 'n':
-        case 'N':
-            n++;
-            break;
-        case 'o':
-        case 'O':
-            o++;
-            break;
-        case 'p':
-        case 'P':
-            p++;
-            break;
-        case 'q':
-        case 'Q':
-            q++;
-            break;
-        case 'r':
-        case 'R':
-            r++;
-            break;
-        case 's':
-        case 'S':
-            s++;
-            break;
-        case 't':
-        case 'T':
-            t++;
-            break;
-        case 'u':
-        case 'U':
-            u++;
-            break;
-        case 'v':
-        case 'V':
-            v++;
-            break;
-        case 'w':
-        case 'W':
-            w++;
-            break;
-        case 'x':
-        case 'X':
-            x++;
-            break;
-        case 'y':
-        case 'Y':
-            y++;
-            break;
-        case 'z':
-        case 'Z':
-            z++;
-            break;
-        case ' ':
-            space++;
-            break;
+void counter() {  
+    int get;
+    for (int i = 0; i < (sizeof(count) / sizeof(count[0])); i++) {
+        for (get = getc(file); get != EOF; get = getc(file)) {
+            char character = characters[i];
+            if(get == character || get == toupper(character))
+                count[i]++;
         }
+        fseek(file, 0, SEEK_SET);
     }
 }
 
@@ -151,15 +54,20 @@ int main(int argc, char** argv)
     }
     //
 
-    count();
-    int sum = a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+    int sum;
+    int space;
+
+    counter();
+    size_t arraysize = sizeof(count) / sizeof(count[0]);
+    for(int i = 0; i < arraysize; i++)
+        sum+=count[i];
     sum = sum + space;
     // Show user how many of each alphabetical character are in the given file
-    printf("a: %d\nb: %d\nc: %d\nd: %d\ne: %d\nf: %d\ng: %d\nh: %d\ni: %d\nj: %d\nk: %d\nl: %d\nm: %d\nn: %d\no: %d\np: %d\nq: %d\nr: %d\ns: %d\nt: %d\nu: %d\nv: %d\nw: %d\nx: %d\ny: %d\nz: %d\n", a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);
-    // Show user how many of each special character are in the given file (additionally the sum of all symbols as calculated earlier)
-    printf("' ': %d\nsum: %d\n", space, sum);
+    for(int i = 0; i < arraysize; i++)
+        printf("%c: %d\n", characters[i], count[i]);
+    printf("Sum: %d characters\n", sum);
     // Show user how many of each character are in the given file excluding spaces
-    printf("sum (without spaces): %d characters\n", sum-space);
+    printf("Sum (without spaces): %d characters\n", sum-count[26]);
 
     return ERR_NO;
 }
