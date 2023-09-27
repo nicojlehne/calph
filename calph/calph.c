@@ -55,5 +55,7 @@ int main(int argc, char** argv)
     printf("Sum: %d characters\n", sum);
     printf("Sum (without spaces): %d characters\n", sum-count[countArraySize - 1]);
 
+    fclose(file);
+
     return ERR_NO;
 }
