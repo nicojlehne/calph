@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include <stdlib.h>
 
 #define ERR_NO 0                // Successful: No Error
 #define ERR_GENERIC 1
