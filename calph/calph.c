@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
     printf("Sum: %d characters\n", sum);
 
-    printf("Sum (without spaces): %d characters\n", sum-count[sizeof(count) / sizeof(*count) - 1]);
+    printf("Sum (without spaces): %d characters\n", sum-count[arraysize - 1]);
 
     return ERR_NO;
 }
