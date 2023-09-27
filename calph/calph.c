@@ -2,7 +2,7 @@
 #define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
 #endif
 
-#define CALPH_VERSION "0.1.1"
+#define CALPH_VERSION "0.2.0"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -13,9 +13,15 @@
 #define ERR_NOFILE 2            // Error: No File
 #define ERR_NOARG 3             // Error: No Arguments given
 
-char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ',
-                '+', '-', '*', '/', '!', '"', '$', '%', '&', '(', ')', '=', '?'};
+char characters[] = {' ', '!', '"', '#', '$', '%', '&', '\'', '(',
+                     ')', '*', '+', ',', '-', '.', '/', '0',
+                     '1', '2', '3', '4', '5', '6', '7', '8',
+                     '9', ':', ';', '<', '=', '>', '?', '@',
+                     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                     'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                     'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                     'y', 'z', '[', '\\', ']', '^', '_', '`',
+                     '{', '|', '}', '~'};
 unsigned int count[(sizeof(characters)/sizeof(*characters))] = {0};
 size_t countArraySize = sizeof(count) / sizeof(*count);
               
@@ -42,7 +48,7 @@ int main(int argc, char** argv) {
         return ERR_NOFILE;
     }
 
-    int sum, space;
+    int sum;
 
     counter();
     for(int i = 0; i < countArraySize; i++) {
@@ -50,9 +56,9 @@ int main(int argc, char** argv) {
         if(!(count[i] == 0))
             printf("%c: %d\n", characters[i], count[i]);
     }
-    sum = sum + space;
+    sum = sum + count[0];
     printf("Sum: %d characters\n", sum);
-    printf("Sum (without spaces): %d characters\n", sum-count[countArraySize - 1]);
+    printf("Sum (without spaces): %d characters\n", sum-count[0]);
 
     fclose(file);
     return ERR_NO;
