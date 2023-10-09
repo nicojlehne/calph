@@ -41,12 +41,15 @@ void counter(char * mode, char ** argv) {
             fseek(file, 0, SEEK_SET);
         }
     } else if (strcmp(mode, "text") == 0) {
-        for (int i = 0; i < (countArraySize); i++)
+        for (int i = 0; i < (countArraySize); i++) {
+            if(argv[2] == NULL)
+                argv[2] = argv[1];
             for (int k = 0; k < strlen(argv[2]); k++) {
                 char character = argv[2][k];
                 if(character == characters[i] || character == toupper(characters[i]))
                     count[i]++;
             }
+        }
     }
 }
 
@@ -70,6 +73,8 @@ int main(int argc, char** argv) {
     } else if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
         help();
         return 0;
+    } else {
+        counter("text", argv);
     }
 
     for(int i = 0; i < countArraySize; i++) {
