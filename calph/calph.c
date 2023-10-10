@@ -1,7 +1,4 @@
-#define CALPH_VERSION "0.3.2"
-
-#define HEADERS (<stdio.h>)(<stdlib.h>)(<ctype.h>)(<string.h>)(<stdbool.h>)("calph.h")
-#include "Headers.inl"
+#include "calph.h"
 
 char characters[] = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0',
                      '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@',
@@ -12,18 +9,16 @@ unsigned int count[(sizeof(characters)/sizeof(*characters))] = {0};
 size_t countArraySize = sizeof(count) / sizeof(*count);
 unsigned int sum = 0;
               
-FILE* file;
-FILE* logfile;
+FILE* file; FILE* logfile;
 
 bool logFileProvided = 0;
 
 void counter(char * mode, char ** argv) {
-    if (strcmp(mode, "file") == 0) {
-        for (int i = 0; i < (countArraySize); i++) {
+    if (strcmp(mode, "file") == 0) for (int i = 0; i < (countArraySize); i++) {
             for (int get = getc(file); get != EOF; get = getc(file)) if (get == characters[i] || get == toupper(characters[i])) count[i]++;
             fseek(file, 0, SEEK_SET);
         }
-    } else if (strcmp(mode, "text") == 0) {
+    else if (strcmp(mode, "text") == 0) {
         for (int i = 0; i < (countArraySize); i++) {
             if (argv[2] == NULL) argv[2] = argv[1];
             for (int k = 0; k < strlen(argv[2]); k++) {
@@ -42,22 +37,16 @@ int main(int argc, char** argv) {
 
     if (strcmp(argv[1], "--file") == 0 || strcmp(argv[1], "-f") == 0) {
         int err = fopen_s(&file, argv[2], "r");
-        if (!(err == 0)) {
-            printf("File doesn't exist or is otherwise unavailable\nTry supplying a (valid) filename\n");
-            return ERR_NOFILE;
-        }
+        if (!(err == 0)) help(ERR_NOFILE);
         counter("file", argv);
     } else if (strcmp(argv[1], "--text") == 0 || strcmp(argv[1], "-t") == 0) counter("text", argv);
     else if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) help(0);
     else counter("text", argv);
 
     if (argc > 3) {
-        if (strcmp(argv[3], "--log") == 0 || strcmp(argv[3], "-l") == 0) {
+        if (strcmp(argv[3], "--log") == 0 || strcmp(argv[3], "-l") == 0) {  // Lowercase 'L', neither '1' or uppercase 'i'
             int err = fopen_s(&logfile, argv[4], "a");
-            if (!(err == 0)) {
-                printf("No (valid) location/name for output logfile provided\n");
-                return ERR_NOLOGFILE;
-            }
+            if (!(err == 0)) help(ERR_NOLOGFILE);
             logFileProvided = 1;
         }
     }
@@ -71,7 +60,6 @@ int main(int argc, char** argv) {
     }
     printf("Sum: %d characters\nSum (without spaces): %d characters\n", sum, sum-count[0]);
     if (logFileProvided) fprintf(logfile, "Sum: %d characters\nSum (without spaces): %d characters\n", sum, sum-count[0]);
-
     if (file != NULL) fclose(file);
     return ERR_NO;
 }
