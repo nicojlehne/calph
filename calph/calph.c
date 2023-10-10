@@ -1,4 +1,4 @@
-#define CALPH_VERSION "0.3.1"
+#define CALPH_VERSION "0.3.2"
 
 #define HEADERS (<stdio.h>)(<stdlib.h>)(<ctype.h>)(<string.h>)(<stdbool.h>)("calph.h")
 #include "Headers.inl"
@@ -16,12 +16,6 @@ FILE* file;
 FILE* logfile;
 
 bool logFileProvided = 0;
-
-void help(int exitCode) {
-    printf("\nUse: calph [options] [input]\n\n");
-    printf("Available [options] are:\n\t\t\t--file\n\t\t\t\tTo open a file provided as filepath via [input].\n\t\t\t--text\n\t\t\t\tTo open text provided via [input]\n");
-    exit(exitCode);
-}
 
 void counter(char * mode, char ** argv) {
     if (strcmp(mode, "file") == 0) {
