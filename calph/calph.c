@@ -1,4 +1,4 @@
-#include "calph.h"
+#include "calphimpl.c"
 
 int main(int argc, char** argv) {
     checkArgs(argc, argv);
