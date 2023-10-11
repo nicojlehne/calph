@@ -1,12 +1,16 @@
 #ifndef CALPH_H
 #define CALPH_H 1
 
+#ifdef __unix
+#define fopen_s(pFile, filename, mode) ((*(pFile))=fopen((filename), (mode)))==NULL
+#endif
+
 // Headers
 #define HEADERS (<stdio.h>)(<stdlib.h>)(<ctype.h>)(<string.h>)(<stdbool.h>)
 #include "Headers.inl"
 
 // Version
-#define CALPH_VERSION "0.3.5"
+#define CALPH_VERSION "0.3.6"
 
 // Error codes
 static const int ERR_NO = 0;
@@ -18,9 +22,13 @@ static const int ERR_NOLOGFILE = 4; // Error: No log file location/name
 // Functions
 void help(int);
 
-void checkArgs(int, char **);
+void errorHandler(int);
 
-void checkFile(FILE*, int);
+void argumentHandler(int, char **);
+
+int fileHandler(char **);
+
+void yepHandler(bool, char *, const char *, int);
 
 void counter(char *, char **);
 
